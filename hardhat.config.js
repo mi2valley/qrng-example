@@ -1,14 +1,18 @@
 require('@nomiclabs/hardhat-waffle');
 require('hardhat-deploy');
+const dotenv = require('dotenv');
 
-const fs = require('fs');
-let credentials = require('./credentials.example.json');
-if (fs.existsSync('./credentials.json')) {
-  credentials = require('./credentials.json');
-}
+dotenv.config();
+const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
+const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY;
 
 module.exports = {
-  networks: credentials.networks,
+  networks: {
+    goerli: {
+      url: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+      accounts: [`0x${GOERLI_PRIVATE_KEY}`],
+    },
+  },
   solidity: {
     version: '0.8.9',
     settings: {
